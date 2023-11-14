@@ -1,5 +1,5 @@
 import {FC} from "react";
-import {AppBar, Box, Button, Toolbar, Typography} from "@mui/material";
+import {AppBar, Box, Toolbar, Typography} from "@mui/material";
 
 
 const TitleBar:FC = () => {
@@ -10,7 +10,6 @@ const TitleBar:FC = () => {
                     <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                         SignEazy
                     </Typography>
-                    <Button sx={{borderRadius: 10}} variant="contained" color="info">Reset</Button>
                 </Toolbar>
             </AppBar>
         </Box>
