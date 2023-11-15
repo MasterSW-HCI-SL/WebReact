@@ -6,7 +6,6 @@ import ChatBubble from "./ChatBubble";
 
 interface ChatContainerProps {
     messages: Array<ChatMessage>
-
 }
 
 const inputMessage = (message : ChatMessage) => {

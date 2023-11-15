@@ -1,12 +1,25 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import TitleBar from "./components/TitleBar";
 import {Stack} from "@mui/material";
 import SideBar from "./components/SideBar";
 import ChatContainer from "./components/ChatContainer";
 import {ChatMessage} from "./lib/datatypes";
 
-function App() {
+const App = () => {
   const [chatMessages] = useState<Array<ChatMessage>>(messages)
+  const [currentLabel, setCurrentLabel] = useState<string>("")
+
+  const handleLabelChange = (label: string) => {
+    if (label !== currentLabel) {
+      setCurrentLabel(label)
+    }
+  }
+
+  useEffect(() => {
+    if (currentLabel !== "") {
+      console.log("Label: " + currentLabel)
+    }
+  }, [currentLabel])
 
   return (
       <div style={{
@@ -14,7 +27,7 @@ function App() {
       }}>
         <TitleBar/>
         <Stack sx={{height: "100%"}} direction={"row"}>
-          <SideBar />
+          <SideBar labelChange={handleLabelChange} />
           <ChatContainer messages={chatMessages} />
         </Stack>
 
