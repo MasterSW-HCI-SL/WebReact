@@ -51,7 +51,7 @@ function useLogic(setCurrentLabel: (label: string) => void) {
                         maxVideoWidth * Math.min(...landmarksX),
                         maxVideoHeight * Math.min(...landmarksY) - 15
                     );
-                    /*
+
                     drawRectangle(
                         ctx,
                         {
@@ -73,6 +73,7 @@ function useLogic(setCurrentLabel: (label: string) => void) {
                             lineWidth: 1,
                         }
                     );
+                    /*
                     drawConnectors(ctx, landmarks, HAND_CONNECTIONS, {
                         color: '#00ffff',
                         lineWidth: 1,

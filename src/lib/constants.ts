@@ -1,3 +1,3 @@
 export const CONFIGS = {
-    keypointClassifierLabels: ['Open', 'Closed', 'Pointing'],
+    keypointClassifierLabels: ['Fist', 'Peace', 'Rock', 'ThumbsUp'],
 };
