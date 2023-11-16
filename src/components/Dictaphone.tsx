@@ -1,19 +1,38 @@
-import React from 'react';
+import React, {FC} from 'react';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import {Button} from "@mui/material";
 
-const Dictaphone = () => {
+interface DictaphoneProps {
+}
+
+const Dictaphone:FC<DictaphoneProps> = () => {
+
+    const commands = [
+        {
+            command: '* færdig',
+            callback: (message) => {
+                console.log(message)
+            },
+        }
+    ]
+
+
     const {
         transcript,
         listening,
         resetTranscript,
         browserSupportsSpeechRecognition
-    } = useSpeechRecognition();
+    } = useSpeechRecognition({ commands });
+
+
 
     if (!browserSupportsSpeechRecognition) {
         return <span>Browser doesn't support speech recognition.</span>;
     }
+
+
+
 
     const startListening = async () => {
         await SpeechRecognition.startListening({ continuous: true, language: "da-DK" });
@@ -50,8 +69,6 @@ const Dictaphone = () => {
                     Reset
                 </Button>
             )}
-
-
             <p>{transcript}</p>
         </div>
     );

@@ -6,20 +6,36 @@ import ChatContainer from "./components/ChatContainer";
 import {ChatMessage} from "./lib/datatypes";
 
 const App = () => {
-  const [chatMessages] = useState<Array<ChatMessage>>(messages)
+  const [chatMessages, setChatMessages] = useState<Array<ChatMessage>>([])
   const [currentLabel, setCurrentLabel] = useState<string>("")
 
   const handleLabelChange = (label: string) => {
     if (label !== currentLabel) {
-      setCurrentLabel(label)
+        setCurrentLabel(label)
     }
   }
 
   useEffect(() => {
     if (currentLabel !== "") {
-      console.log("Label: " + currentLabel)
+      const newMessage : ChatMessage = {
+        text: currentLabel,
+        SL: true
+      }
+      if (newMessage.text !== "" && newMessage.text !== " " && newMessage.text !== undefined && newMessage.text !== null) {
+        if (chatMessages.length > 0) {
+          if (chatMessages[chatMessages.length-1].text !== newMessage.text) {
+            const newMessages : Array<ChatMessage> = [...chatMessages, newMessage];
+            localStorage.setItem("messages", JSON.stringify(newMessages));
+            setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
+          }
+        } else {
+          const newMessages : Array<ChatMessage> = [...chatMessages, newMessage];
+          localStorage.setItem("messages", JSON.stringify(newMessages));
+          setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
+        }
+      }
     }
-  }, [currentLabel])
+  }, [currentLabel, chatMessages])
 
   return (
       <div style={{
@@ -34,28 +50,4 @@ const App = () => {
       </div>
   );
 }
-
-const message1 : ChatMessage = {
-  text: "Lorem ipsum",
-  SL: true
-}
-const message2 : ChatMessage = {
-  text: "Lorem ipsum",
-  SL: false
-}
-const message3 : ChatMessage = {
-  text: "Lorem ipsum",
-  SL: true
-}
-const message4 : ChatMessage = {
-  text: "Lorem ipsum",
-  SL: true
-}
-
-const messages = [
-  message1,
-  message2,
-  message3,
-  message4
-]
 export default App;
