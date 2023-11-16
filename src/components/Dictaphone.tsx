@@ -4,15 +4,18 @@ import GraphicEqIcon from "@mui/icons-material/GraphicEq";
 import {Button} from "@mui/material";
 
 interface DictaphoneProps {
+    spokenChange: (spoken: string) => void
 }
 
-const Dictaphone:FC<DictaphoneProps> = () => {
+const Dictaphone:FC<DictaphoneProps> = (props) => {
 
     const commands = [
         {
             command: '* færdig',
             callback: (message) => {
-                console.log(message)
+                console.log("command: " + message)
+                props.spokenChange(message);
+                resetTranscript();
             },
         }
     ]

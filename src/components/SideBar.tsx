@@ -10,6 +10,7 @@ import HandsCapture from "./HandsCapture";
 
 interface SideBarProps {
     labelChange: (label: string) => void
+    speechChange: (speech: string) => void
 }
 const SideBar: FC<SideBarProps> = (props) => {
 
@@ -23,7 +24,7 @@ const SideBar: FC<SideBarProps> = (props) => {
             flexDirection: "column",
         }}>
             <Stack sx={{marginLeft: 2, marginBottom: "auto"}} spacing={2} divider={<Divider orientation="horizontal" flexItem />} justifyContent="space-between">
-                <Dictaphone />
+                <Dictaphone spokenChange={props.speechChange}/>
             </Stack>
             <>
                 <HandsCapture labelChange={props.labelChange} />
