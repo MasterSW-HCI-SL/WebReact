@@ -29,17 +29,22 @@ function useLogic(setCurrentLabel: (label: string) => void) {
             // @ts-ignore
             const ctx = canvasEl.current.getContext('2d');
 
+            ctx.clearRect(0, 0,canvasEl.current.width, canvasEl.current.height);
+
+            // Draw the flipped video feed
             ctx.save();
-            // @ts-ignore
-            ctx.clearRect(0, 0, canvasEl.current.width, canvasEl.current.height);
-            ctx.drawImage(results.image, 0, 0, maxVideoWidth, maxVideoHeight);
+            ctx.scale(-1, 1);
+            ctx.translate(-canvasEl.current.width, 0);
+            ctx.drawImage(results.image, 0, 0, canvasEl.current.width,canvasEl.current.height);
+            ctx.restore();
 
             if (results.multiHandLandmarks) {
+                // results.multiHandedness[index].label is where i find the label for the hand
                 for (const [index, landmarks] of results.multiHandLandmarks.entries()) {
                     processLandmark(landmarks, results.image).then(
                         (val) => (handsGesture.current[index] = val)
                     );
-                    setCurrentLabel(CONFIGS.keypointClassifierLabels[handsGesture.current[index]]);
+                    setCurrentLabel(`${results.multiHandedness[index].label.toLowerCase() === "right"? "Left" : "Right"} : ${CONFIGS.keypointClassifierLabels[handsGesture.current[index]]}`);
                     // @ts-ignore
                     const landmarksX = landmarks.map((landmark) => landmark.x);
                     // @ts-ignore
@@ -47,7 +52,7 @@ function useLogic(setCurrentLabel: (label: string) => void) {
                     ctx.fillStyle = '#ff0000';
                     ctx.font = '12px serif';
                     ctx.fillText(
-                        CONFIGS.keypointClassifierLabels[handsGesture.current[index]],
+                    `${results.multiHandedness[index].label} : ${CONFIGS.keypointClassifierLabels[handsGesture.current[index]]}`,
                         maxVideoWidth * Math.min(...landmarksX),
                         maxVideoHeight * Math.min(...landmarksY) - 15
                     );
