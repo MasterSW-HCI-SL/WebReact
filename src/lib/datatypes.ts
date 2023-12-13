@@ -1,5 +1,3 @@
-
-
 export type ChatMessage = {
     text: string,
     SL: boolean

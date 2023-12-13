@@ -8,6 +8,7 @@ import {
 import { Hands, HAND_CONNECTIONS } from '@mediapipe/hands';
 import useKeyPointClassifier from "./useKeyPointClassifier";
 import {CONFIGS} from "./constants";
+import labels from "./fsm/labels";
 
 const maxVideoWidth = 250;
 const maxVideoHeight = 175;
@@ -40,11 +41,18 @@ function useLogic(setCurrentLabel: (label: string) => void) {
 
             if (results.multiHandLandmarks) {
                 // results.multiHandedness[index].label is where i find the label for the hand
+                let currentLabel : Array<String> = ["", ""];
                 for (const [index, landmarks] of results.multiHandLandmarks.entries()) {
                     processLandmark(landmarks, results.image).then(
                         (val) => (handsGesture.current[index] = val)
                     );
-                    setCurrentLabel(`${results.multiHandedness[index].label.toLowerCase() === "right"? "Left" : "Right"} : ${CONFIGS.keypointClassifierLabels[handsGesture.current[index]]}`);
+                    // TODO: Make some label generation here and check if left and right label exists
+                    if (results.multiHandedness[index].label.toLowerCase() === "right" && labels.includes(`Left:${CONFIGS.keypointClassifierLabels[handsGesture.current[index]]}`)){
+                        currentLabel[0] = `Left:${CONFIGS.keypointClassifierLabels[handsGesture.current[index]]}`;
+                    } else if(results.multiHandedness[index].label.toLowerCase() === "left" && labels.includes(`Right:${CONFIGS.keypointClassifierLabels[handsGesture.current[index]]}`)) {
+                        currentLabel[1] = `Right:${CONFIGS.keypointClassifierLabels[handsGesture.current[index]]}`;
+                    }
+
                     // @ts-ignore
                     const landmarksX = landmarks.map((landmark) => landmark.x);
                     // @ts-ignore
@@ -90,9 +98,25 @@ function useLogic(setCurrentLabel: (label: string) => void) {
 
                      */
                 }
+                const label : string = assembleLabel(currentLabel);
+                setCurrentLabel(label);
             }
             ctx.restore();
         }
+    }
+
+    const assembleLabel = (labelArray: Array<String>) => {
+        let label = "";
+        if (labelArray[0] === "" && labelArray[1] === ""){
+            return "";
+        }
+        for (let i = 0; i < labelArray.length; i++){
+            label += labelArray[i];
+            if (i === 0){
+                label += " - ";
+            }
+        }
+        return label;
     }
 
     const loadHands = () => {

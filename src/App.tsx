@@ -4,15 +4,29 @@ import {Stack} from "@mui/material";
 import SideBar from "./components/SideBar";
 import ChatContainer from "./components/ChatContainer";
 import {ChatMessage} from "./lib/datatypes";
+import FiniteStateMachine from "./lib/fsm/fsm";
 
 const App = () => {
   const [chatMessages, setChatMessages] = useState<Array<ChatMessage>>([])
   const [currentLabel, setCurrentLabel] = useState<string>("")
   const [spokenMessage, setSpokenMessage] = useState<string>("")
+  const [SlMessage, setSlMessage] = useState<string>("");
 
-  const handleLabelChange = (label: string) => {
-    if (label !== currentLabel) {
+  const fsmCallback = (message: string) => {
+    console.log("message received: " + message)
+    setSlMessage(message);
+  }
+
+  const fsm = new FiniteStateMachine(fsmCallback);
+
+  const handleLabelChange = async (label: string) => {
+    if (label === " - Right:StopR" || label === "Left:StopL - ") {
+      if (currentLabel !== "stop") {
+        setCurrentLabel("stop")
+      }
+    } else if (label !== currentLabel) {
         setCurrentLabel(label)
+        await fsm.takeStep(label);
     }
   }
 
@@ -23,27 +37,27 @@ const App = () => {
   }
 
   useEffect(() => {
-    if (currentLabel !== "") {
+
+    if (currentLabel === "stop") {
       const newMessage : ChatMessage = {
-        text: currentLabel,
+        text: SlMessage,
         SL: true
-      }
-      if (newMessage.text !== "" && newMessage.text !== " " && newMessage.text !== undefined && newMessage.text !== null) {
+      };
+      if (SlMessage !== "" && SlMessage !== " " && SlMessage !== undefined && SlMessage !== null) {
         if (chatMessages.length > 0) {
-          if (chatMessages[chatMessages.length-1].text !== newMessage.text) {
-            const newMessages : Array<ChatMessage> = [...chatMessages, newMessage];
-            localStorage.setItem("messages", JSON.stringify(newMessages));
-            setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
-          }
+          const newMessages: Array<ChatMessage> = [...chatMessages, newMessage];
+          localStorage.setItem("messages", JSON.stringify(newMessages));
+          setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
         } else {
-          const newMessages : Array<ChatMessage> = [...chatMessages, newMessage];
+          const newMessages: Array<ChatMessage> = [...chatMessages, newMessage];
           localStorage.setItem("messages", JSON.stringify(newMessages));
           setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
         }
+        setSlMessage("");
       }
     }
+
     if (spokenMessage !== ""){
-      console.log(spokenMessage)
       const newMessage : ChatMessage = {
         text: spokenMessage,
         SL: false
@@ -61,8 +75,9 @@ const App = () => {
             setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
           }
         }
+        setSpokenMessage("");
     }
-  }, [currentLabel, chatMessages, spokenMessage])
+  }, [currentLabel, chatMessages, spokenMessage, SlMessage])
 
   return (
       <div style={{

@@ -13,7 +13,6 @@ const Dictaphone:FC<DictaphoneProps> = (props) => {
         {
             command: '* færdig',
             callback: (message) => {
-                console.log("command: " + message)
                 props.spokenChange(message);
                 resetTranscript();
             },
