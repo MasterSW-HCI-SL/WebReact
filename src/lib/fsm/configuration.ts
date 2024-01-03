@@ -4,7 +4,7 @@ enum States {Start = 0,
     I1 = 1, I2 = 2, I3 = 3,
     T1 = 4, T2 = 5, T3 = 6,
     Stop = 7,
-};
+}
 
 enum Events {
     StartI1 = 0, I1I2 = 1, I2I3 = 2,

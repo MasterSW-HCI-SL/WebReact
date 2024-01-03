@@ -15,7 +15,7 @@ export class FiniteStateMachine extends StateMachine<States, Events>  {
 
             t(States.Start,    Events.StartI1,       States.I1, () => console.log("Start -> I1")),
             t(States.I1,       Events.I1I2,       States.I2, () => console.log("I1 -> I2")),
-            t(States.I2,       Events.I2I3,       States.I3, async () => this.wordFound("THIS IS A SAMPLE TEXT FOR TESTING")),
+            t(States.I2,       Events.I2I3,       States.I3, async () => this.wordFound("DETTE ER EN TEST BESKED, KUN BEREGNET TIL TESTING SAMT FOR AT SE HVAD DER SKER HVIS DEN BLIVER RIGTIG LANG")),
 
         ]);
 

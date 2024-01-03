@@ -1,6 +1,7 @@
-import {FC} from "react";
-import {Box, Typography} from "@mui/material";
+import React, {FC} from "react";
+import {Box, Container, Typography} from "@mui/material";
 import {ChatMessage} from "../lib/datatypes";
+import Speech from "react-speech";
 
 interface ChatBubbleProps {
     message : ChatMessage
@@ -19,8 +20,23 @@ const ChatBubble:FC<ChatBubbleProps> = (props) => {
             <Typography sx={{padding: 1}} variant={"body1"}>
                 {props.message.text}
             </Typography>
+            {props.message.SL && (
+                <Container sx={{
+                    display: "flex",
+                    marginBottom: 1
+                }}>
+                    <div style={{marginLeft: "auto"}}>
+                        <Speech text={props.message.text} lang={"da-DK"} voice={"Sara"}
+                                textAsButton={true}
+                                displayText="Play" />
+                    </div>
+
+                </Container>
+
+            )}
         </Box>
     )
 }
+
 
 export default ChatBubble
