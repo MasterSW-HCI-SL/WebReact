@@ -1,12 +1,9 @@
 const labels : string[] = [
-    'Right:Index',
-    'Right:IndexMiddle',
-    'Right:IndexLast',
-    'Right:Thumb',
-    'Right:ThumbIndex',
-    'Right:ThumbLast',
     'Right:StopR',
     'Left:StopL',
+    'Right:FladOp',
+    'Right:FladVandret',
+    'Right:VandOp',
 ]
 
 export default labels;

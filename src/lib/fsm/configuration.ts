@@ -1,15 +1,11 @@
 import Labels from "./labels";
 
 enum States {Start = 0,
-    I1 = 1, I2 = 2, I3 = 3,
-    T1 = 4, T2 = 5, T3 = 6,
-    Stop = 7,
+    Knee1 = 1, Knee2 = 2, Knee3 = 3,
 }
 
 enum Events {
-    StartI1 = 0, I1I2 = 1, I2I3 = 2,
-    StartT1 = 3, T1T2 = 4, T2T3 = 5,
-    Stop = 6,
+    StartKnee = 0, KneeMiddle = 1, KneeEnd = 2,
     restart = 99,
 }
 
@@ -18,9 +14,9 @@ type EventLib = {
 }
 
 const EventLibrary : EventLib = {
-    " - Right:Index" : Events.StartI1,
-    " - Right:IndexMiddle" : Events.I1I2,
-    " - Right:IndexLast" : Events.I2I3,
+    " - Right:FladOp" : Events.StartKnee,
+    " - Right:FladVandret" : Events.KneeMiddle,
+    " - Right:VandOp" : Events.KneeEnd,
 }
 
 export { States, Events, EventLibrary };

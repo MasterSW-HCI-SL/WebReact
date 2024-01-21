@@ -37,24 +37,39 @@ const App = () => {
   }
 
   useEffect(() => {
-
-    if (currentLabel === "stop") {
-      const newMessage : ChatMessage = {
-        text: SlMessage,
-        SL: true
-      };
-      if (SlMessage !== "" && SlMessage !== " " && SlMessage !== undefined && SlMessage !== null) {
-        if (chatMessages.length > 0) {
-          const newMessages: Array<ChatMessage> = [...chatMessages, newMessage];
+    if (SlMessage !== "" && SlMessage !== " " && SlMessage !== undefined && SlMessage !== null) {
+      if (chatMessages.length === 0) {
+        console.log("EMPTY")
+        const newMessage : ChatMessage = {
+          text: SlMessage,
+          SL: true
+        };
+        const newMessages: Array<ChatMessage> = [...chatMessages, newMessage];
+        localStorage.setItem("messages", JSON.stringify(newMessages));
+        setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
+      } else {
+        console.log("NOT EMPTY")
+        if (chatMessages[chatMessages.length - 1].SL) {
+          console.log("ADD TO LAST MESSAGE")
+          const newMessage: ChatMessage = {
+            text: chatMessages[chatMessages.length - 1].text + " " + SlMessage,
+            SL: true
+          };
+          const newMessages: Array<ChatMessage> = [...chatMessages.slice(0, chatMessages.length - 1), newMessage];
           localStorage.setItem("messages", JSON.stringify(newMessages));
           setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
         } else {
+          console.log("ADD NEW MESSAGE")
+          const newMessage: ChatMessage = {
+            text: SlMessage,
+            SL: true
+          };
           const newMessages: Array<ChatMessage> = [...chatMessages, newMessage];
           localStorage.setItem("messages", JSON.stringify(newMessages));
           setChatMessages(localStorage.getItem("messages") ? JSON.parse(localStorage.getItem("messages")!) : []);
         }
-        setSlMessage("");
       }
+      setSlMessage("")
     }
 
     if (spokenMessage !== ""){

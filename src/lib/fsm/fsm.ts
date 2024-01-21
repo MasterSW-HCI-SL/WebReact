@@ -11,11 +11,11 @@ export class FiniteStateMachine extends StateMachine<States, Events>  {
         this.wordFoundCallback = wordFoundCallback;
         this.addTransitions([
             /* fromState        event                 toState         callback */
-            t(States.I3,    Events.restart,       States.Start, () => console.log("Restarted")),
+            t(States.Knee3,    Events.restart,       States.Start, () => console.log("Restarted")),
 
-            t(States.Start,    Events.StartI1,       States.I1, () => console.log("Start -> I1")),
-            t(States.I1,       Events.I1I2,       States.I2, () => console.log("I1 -> I2")),
-            t(States.I2,       Events.I2I3,       States.I3, async () => this.wordFound("DETTE ER EN TEST BESKED, KUN BEREGNET TIL TESTING SAMT FOR AT SE HVAD DER SKER HVIS DEN BLIVER RIGTIG LANG")),
+            t(States.Start,    Events.StartKnee,       States.Knee1, () => console.log("First sign of knee")),
+            t(States.Knee1,       Events.KneeMiddle,       States.Knee2, () => console.log("Second sign of knee")),
+            t(States.Knee2,       Events.KneeEnd,       States.Knee3, async () => this.wordFound("Knee")),
 
         ]);
 
