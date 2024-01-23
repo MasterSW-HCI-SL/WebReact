@@ -128,7 +128,7 @@ function useLogic(setCurrentLabel: (label: string) => void) {
         hands.current.setOptions({
             maxNumHands: 2,
             modelComplexity: 1,
-            minDetectionConfidence: 0.95,
+            minDetectionConfidence: 0.97,
             minTrackingConfidence: 0.5,
         });
         hands.current.onResults(onResults);
